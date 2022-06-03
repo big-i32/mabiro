@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style>
+          body {background-color: #424949;}
+          p {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: center;
+            color:rgb(255, 255, 245);
+            }
+          #Zeile1 {font-size: 250%}
+          #Zeile2 {font-size: 500%}
+          input {
+            width: 50px;
+          }
+          #bar {
+            margin: auto;
+            border: 2px solid whitesmoke;
+            width: 500px;
+            height: 15px;
+          }
+          #fill {
+            margin-right: 0px;
+            border: 0px;
+            background-color: whitesmoke;
+            height: 15px;
+          }
+        </style>
+    </head>
+    <body>
+        <p id="Input"><input type="text" id="duration" value="45"> Minuten <button id="start" onclick="start()">Start</button></p>
+
+        <p id="Zeile1"></p>
+        <p id="Zeile2"></p>
+        <div id="bar" style="display: none;">
+        <div id="fill" style="width: 0px;"></div>
+        </div>
+        <script>
+        function start() {
+
+            document.getElementById("Input").style.display = "none";
+            document.getElementById("bar").style.display = "block";
+        
+            var duration = document.getElementById("duration").value;
+            
+            var start = new Date();
+            var end = new Date();
+
+            end.setMilliseconds(end.getMilliseconds() + 60000*duration);
+            end.setMinutes(Math.ceil(end.getMinutes()*0.2)*5);
+
+            var x = setInterval(function() {
+            
+            if(end.getMinutes() < 10) {
+                var sep = ":0";
+            } else {
+                var sep = ":";
+            }
+
+            document.getElementById("Zeile1").innerHTML = "Bis " + end.getHours() + sep + end.getMinutes();
+
+            var rest = Math.ceil((end - (new Date())) / 60000);
+
+            if(rest < 1) {
+                var zeile2 = "Abschluss";
+            } else if(rest == 1) {
+                var zeile2 = "Noch 1 Minute";
+            } else {
+                var zeile2 = "Noch " + rest + " Minuten";
+            }
+
+            document.getElementById("Zeile2").innerHTML = zeile2;
+
+            perc = "" + Math.min((100 * ((new Date()) - start) / (end - start)), 100) + "%";
+
+            document.getElementById("fill").style.width = perc;
+            
+            }, 1000);
+        }
+
+        </script>
+    </body>
+</html>
